@@ -13,7 +13,7 @@ function draw_bounding_boxes(im, P_gts, P_ests, bounding_boxes, subplot_handle)
     K = [572.4410, 0, 325.26110; 0, 573.57043, 242.04899; 0, 0, 1];
 
     for k = 1:length(bounding_boxes)
-        tol = 10;
+        tol = 1e-3;
         R = P_gts{k}(:,1:3);
         if ~all(all(abs(R'*R - eye(3)) < tol)) | ~(abs(det(R)-1) < tol)
             max(max(abs(R'*R - eye(3))))

@@ -4,12 +4,11 @@ function [err,res] = ComputeReprojectionError(P,U,u)
 
 err = 0;
 res = [];
-for i = 1:length(P);
-    uu = u{i};
-    vis = isfinite(uu(1,:));
-    err = err + ...
-        sum(((P{i}(1,:)*U(:,vis))./(P{i}(3,:)*U(:,vis)) - uu(1,vis)).^2) + ...
-        sum(((P{i}(2,:)*U(:,vis))./(P{i}(3,:)*U(:,vis)) - uu(2,vis)).^2);
-    res = [res ((P{i}(1,:)*U(:,vis))./(P{i}(3,:)*U(:,vis)) - uu(1,vis)).^2 + ...
-            ((P{i}(2,:)*U(:,vis))./(P{i}(3,:)*U(:,vis)) - uu(2,vis)).^2];
+proj = pflat(P*U);
+proj = proj(1:2,:);
+vis = isfinite(u(1,:));
+err=norm(proj - u(1:2,:));
+res = ((P(1,:)*U(:,vis))./(P(3,:)*U(:,vis)) - u(1,vis)).^2 + ...
+            ((P(2,:)*U(:,vis))./(P(3,:)*U(:,vis)) - u(2,vis)).^2;
+
 end
